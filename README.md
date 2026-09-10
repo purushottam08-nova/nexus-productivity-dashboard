@@ -33,3 +33,11 @@ nexus-productivity-dashboard/
 * Added dashboard header and welcome section
 * Added productivity statistics cards
 * Added productivity and focus session panels
+
+
+### Day 2 - CSS Foundation
+
+* created the css structure according to html
+* done styling on various elements of html
+* created a good looking dashboard
+* created a responsive dashboard for large screen, mobile screen and small mobile screen
