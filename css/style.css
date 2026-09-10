@@ -1,0 +1,289 @@
+/* ================================
+   NEXUS — GLOBAL STYLES
+   ================================ */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #08090d;
+    color: #ffffff;
+    min-height: 100vh;
+}
+
+.app {
+    display: flex;
+    min-height: 100vh;
+}
+
+.sidebar {
+    width: 250px;
+    min-height: 100vh;
+    padding: 30px 20px;
+
+    background: #0d0f14;
+    border-right: 1px solid #1d2028;
+
+    position: fixed;
+    left: 0;
+    top: 0;
+}
+
+.logo h1 {
+    font-size: 24px;
+    letter-spacing: 4px;
+    margin-bottom: 5px;
+}
+
+.logo span {
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: #777b87;
+}
+
+
+.navigation {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 50px;
+}
+
+.nav-item {
+    padding: 12px 15px;
+
+    color: #8b8f9b;
+    text-decoration: none;
+
+    border-radius: 10px;
+
+    transition: 0.3s ease;
+}
+
+.nav-item:hover {
+    background: #171a21;
+    color: #ffffff;
+}
+
+.nav-item.active {
+    background: #ffffff;
+    color: #08090d;
+}
+
+.main-content {
+    margin-left: 250px;
+    width: calc(100% - 250px);
+    padding: 35px 45px;
+}
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 45px;
+}
+
+.topbar p {
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: #777b87;
+    margin-bottom: 8px;
+}
+
+.topbar h2 {
+    font-size: 24px;
+}
+
+.profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #ffffff;
+    color: #08090d;
+
+    font-weight: bold;
+}
+
+.welcome {
+    margin-bottom: 35px;
+}
+
+.welcome p {
+    color: #777b87;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.welcome h1 {
+    font-size: 42px;
+    font-weight: 600;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+
+    margin-bottom: 25px;
+}
+
+.stat-card {
+    padding: 25px;
+
+    background: #101218;
+    border: 1px solid #1d2028;
+    border-radius: 16px;
+
+    transition: 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(4px);
+    border-color: #3a3e49;
+}
+
+.stat-card span {
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    color: #777b87;
+}
+
+.stat-card h2 {
+    font-size: 30px;
+    margin: 15px 0 8px;
+}
+
+.stat-card p {
+    color: #777b87;
+    font-size: 13px;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+}
+
+.productivity-panel,
+.focus-panel {
+    padding: 25px;
+
+    background: #101218;
+    border: 1px solid #1d2028;
+    border-radius: 16px;
+}
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 25px;
+}
+
+.panel-header h2 {
+    font-size: 18px;
+}
+
+.panel-header span {
+    font-size: 11px;
+    color: #777b87;
+}
+
+.timer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    min-height: 180px;
+
+    font-size: 48px;
+    font-weight: 600;
+}
+
+.start-btn {
+    width: 100%;
+    padding: 13px;
+
+    border: none;
+    border-radius: 10px;
+
+    background: #ffffff;
+    color: #08090d;
+
+    font-weight: bold;
+    cursor: pointer;
+
+    transition: 0.3s ease;
+}
+
+.start-btn:hover {
+    transform: scale(1.02);
+}
+
+
+/* for mobile */
+@media (max-width: 900px) {
+
+    .sidebar {
+        width: 200px;
+    }
+
+    .main-content {
+        margin-left: 200px;
+        width: calc(100% - 200px);
+        padding: 25px;
+    }
+
+    .stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* for small mobile */
+
+@media (max-width: 600px) {
+
+    .sidebar {
+        display: none;
+    }
+
+    .main-content {
+        margin-left: 0;
+        width: 100%;
+        padding: 20px;
+    }
+
+    .stats {
+        grid-template-columns: 1fr;
+    }
+
+    .welcome h1 {
+        font-size: 32px;
+    }
+}
