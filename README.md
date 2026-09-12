@@ -1,6 +1,33 @@
-# nexus-productivity-dashboard
-A productivity command center built with HTML, CSS &amp; JS
+# NEXUS — Productivity Command Center
 
+A futuristic productivity dashboard built using **HTML, CSS and JavaScript**.
+
+NEXUS is designed as a modern **Productivity OS** that helps users manage tasks, goals, focus sessions, notes and productivity analytics from a single dashboard.
+
+---
+
+## 🚧 Project Status
+
+**In Development 🚀**
+
+This project is being developed step-by-step as part of a weekly web development challenge.
+
+---
+
+## ✨ Planned Features
+
+* 📊 Productivity Dashboard
+* ✅ Task Management
+* 🎯 Goals & Progress Tracking
+* ⏱️ Pomodoro / Focus Timer
+* 📈 Productivity Analytics
+* 📝 Personal Notes
+* 💾 Local Storage
+* 🌙 Dark / Light Mode
+* 📱 Responsive Design
+* ⚡ Interactive JavaScript Components
+
+---
 
 ## 📁 Project Structure
 
@@ -17,6 +44,8 @@ nexus-productivity-dashboard/
 └── README.md
 ```
 
+---
+
 ## 📅 Development Progress
 
 ### Day 0 — Git & Project Setup
@@ -24,20 +53,88 @@ nexus-productivity-dashboard/
 * Created GitHub repository
 * Installed and configured Git
 * Connected local project with GitHub
+* Cloned repository locally
 * Created initial project structure
+* Set up README documentation
 
 ### Day 1 — HTML Foundation
 
-* Created the basic HTML structure
-* Added sidebar and navigation
-* Added dashboard header and welcome section
+* Created semantic HTML structure
+* Built NEXUS sidebar navigation
+* Added Dashboard, Tasks, Goals, Analytics, Notes and Settings navigation
+* Added top navigation bar
+* Added user profile section
+* Added welcome section
 * Added productivity statistics cards
-* Added productivity and focus session panels
+* Added productivity chart structure
+* Added focus session / Pomodoro section
 
+### Day 2 — CSS Foundation & UI Design
 
-### Day 2 - CSS Foundation
+* Created complete dark-themed interface
+* Added responsive layout
+* Styled sidebar and navigation
+* Added glassmorphism effects
+* Added card-based dashboard design
+* Added hover animations and transitions
+* Added purple accent design system
+* Added gradient effects
+* Added productivity chart styling
+* Added timer styling and glow effect
+* Added responsive breakpoints for tablet and mobile
+* Improved typography, spacing and overall visual hierarchy
 
-* created the css structure according to html
-* done styling on various elements of html
-* created a good looking dashboard
-* created a responsive dashboard for large screen, mobile screen and small mobile screen
+---
+
+## 🛠️ Tech Stack
+
+* **HTML5** — Structure
+* **CSS3** — Styling & Responsive Design
+* **JavaScript** — Interactivity
+* **Git** — Version Control
+* **GitHub** — Project Hosting
+
+---
+
+## 🎯 Goal
+
+Build a complete, responsive and interactive **Productivity Command Center** using vanilla **HTML, CSS and JavaScript**, while progressively improving the project through real-world development practices.
+
+---
+
+## 🗺️ Development Roadmap
+
+```text
+Day 0  → Git & Project Setup        ✅
+Day 1  → HTML Foundation            ✅
+Day 2  → CSS & UI Design            ✅
+Day 3  → JavaScript Fundamentals    🔄
+Day 4  → Interactive Features       ⏳
+Day 5  → Analytics & Data           ⏳
+Day 6  → Responsive Polish          ⏳
+Day 7  → Final Polish & Deployment  ⏳
+```
+
+---
+
+## 📌 Current Focus
+
+> Building a professional productivity dashboard from scratch while learning HTML, CSS and JavaScript through practical development.
+
+---
+
+## 👨‍💻 Developer
+
+**Tanmay Pelapkar**
+
+B.Tech CSE Student | Web Development | AI/ML | Software Development
+
+---
+
+## ⭐ Project Vision
+
+NEXUS is not just a dashboard project.
+
+The goal is to gradually transform it into a **fully functional personal productivity system** with real data, interactive features, persistent storage and meaningful analytics.
+
+**Build. Learn. Improve. Repeat.**
