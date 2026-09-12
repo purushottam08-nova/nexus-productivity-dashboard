@@ -22,6 +22,11 @@
     box-sizing: border-box;
 }
 
+::selection {
+    background: var(--accent);
+    color: #ffffff;
+}
+
 html {
     scroll-behavior: smooth;
 }
@@ -31,6 +36,7 @@ body {
     background: var(--bg-primary);
     color: var(--text-primary);
     min-height: 100vh;
+    overflow-x: hidden;
 }
 
 .app {
@@ -83,14 +89,24 @@ body {
 }
 
 .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
     padding: 12px 15px;
 
-    color: #8b8f9b;
+    color: var(--text-secondary);
     text-decoration: none;
 
     border-radius: 10px;
 
     transition: 0.3s ease;
+}
+
+.nav-item span {
+    width: 20px;
+    text-align: center;
+    font-size: 15px;
 }
 
 .nav-item:hover {
@@ -189,8 +205,9 @@ body {
 }
 
 .welcome h1 {
-    font-size: 42px;
+    font-size: clamp(32px, 4vw, 48px);
     font-weight: 600;
+    letter-spacing: -1px;
 }
 
 .stats {
@@ -202,6 +219,9 @@ body {
 }
 
 .stat-card {
+    position: relative;
+    overflow: hidden;
+
     padding: 25px;
 
     background: rgba(16, 18, 24, 0.7);
@@ -213,6 +233,27 @@ body {
     transition: transform 0.3s ease,
                 border-color 0.3s ease,
                 box-shadow 0.3s ease;
+}
+
+.stat-card::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 20px;
+    right: 20px;
+
+    height: 1px;
+
+    background: linear-gradient(
+        90deg,
+        transparent,
+        var(--accent),
+        transparent
+    );
+
+    opacity: 0.6;
 }
 
 .stat-card:hover {
@@ -323,6 +364,54 @@ body {
 
 .start-btn:hover {
     transform: scale(1.02);
+}
+
+.chart {
+    height: 220px;
+
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-around;
+
+    gap: 15px;
+
+    padding: 20px 10px 0;
+
+    border-bottom: 1px solid var(--border);
+}
+
+.chart-bar {
+    width: 100%;
+
+    max-width: 35px;
+
+    background: linear-gradient(
+        to top,
+        var(--accent),
+        #c4b5fd
+    );
+
+    border-radius: 8px 8px 0 0;
+
+    opacity: 0.8;
+
+    transition: 0.3s ease;
+}
+
+.chart-bar:hover {
+    opacity: 1;
+    transform: scaleY(1.03);
+}
+
+.chart-labels {
+    display: flex;
+    justify-content: space-around;
+
+    padding: 12px 10px 0;
+
+    color: var(--text-secondary);
+
+    font-size: 11px;
 }
 
 
