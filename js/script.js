@@ -100,29 +100,19 @@ function addTask() {
         return;
     }
 
-    const taskItem = document.createElement("div");
+    const newTask = {
+        id: Date.now(),
+        text: taskText,
+        completed: false
+    };
 
-    taskItem.classList.add("task-item");
+    tasks.push(newTask);
 
-    taskItem.innerHTML = `
-        <div class="task-content">
-            <input type="checkbox" class="task-checkbox">
-
-            <span class="task-text">
-                ${taskText}
-            </span>
-        </div>
-
-        <button class="delete-task">
-            ×
-        </button>
-    `;
-
-    taskList.appendChild(taskItem);
+    saveTasks();
 
     taskInput.value = "";
 
-    updateTaskCount();
+    renderTasks();
 }
 addTaskButton.addEventListener("click", addTask);
 
@@ -133,16 +123,44 @@ taskInput.addEventListener("keydown", function (event) {
     }
 
 });
+tasks.push(newTask);
 
 taskList.addEventListener("change", function (event) {
 
-    if (event.target.classList.contains("task-checkbox")) {
-
-        const taskItem = event.target.closest(".task-item");
-
-        taskItem.classList.toggle("completed");
-
+    if (!event.target.classList.contains("task-checkbox")) {
+        return;
     }
+
+    const taskId = Number(event.target.dataset.id);
+
+    const task = tasks.find(function (task) {
+        return task.id === taskId;
+    });
+
+    if (task) {
+        task.completed = event.target.checked;
+    }
+
+    saveTasks();
+
+    renderTasks();
+
+});
+taskList.addEventListener("click", function (event) {
+
+    if (!event.target.classList.contains("delete-task")) {
+        return;
+    }
+
+    const taskId = Number(event.target.dataset.id);
+
+    tasks = tasks.filter(function (task) {
+        return task.id !== taskId;
+    });
+
+    saveTasks();
+
+    renderTasks();
 
 });
 
@@ -167,3 +185,92 @@ function updateTaskCount() {
     taskCount.textContent =
         `${totalTasks} ${totalTasks === 1 ? "Task" : "Tasks"}`;
 }
+
+let tasks = JSON.parse(localStorage.getItem("nexusTasks")) || [];
+
+function saveTasks() {
+
+    localStorage.setItem(
+        "nexusTasks",
+        JSON.stringify(tasks)
+    );
+
+}
+
+function renderTasks() {
+
+    taskList.innerHTML = "";
+
+    tasks.forEach(function (task) {
+
+        const taskItem = document.createElement("div");
+
+        taskItem.classList.add("task-item");
+
+        if (task.completed) {
+            taskItem.classList.add("completed");
+        }
+
+        taskItem.innerHTML = `
+            <div class="task-content">
+
+                <input
+                    type="checkbox"
+                    class="task-checkbox"
+                    data-id="${task.id}"
+                    ${task.completed ? "checked" : ""}
+                >
+
+                <span class="task-text">
+                    ${task.text}
+                </span>
+
+            </div>
+
+            <button
+                class="delete-task"
+                data-id="${task.id}"
+            >
+                ×
+            </button>
+        `;
+
+        taskList.appendChild(taskItem);
+
+    });
+
+    updateTaskCount();
+    updateCompletedCount();
+}
+
+function updateTaskCount() {
+
+    const totalTasks = tasks.length;
+
+    taskCount.textContent =
+        `${totalTasks} ${totalTasks === 1 ? "Task" : "Tasks"}`;
+}
+const completedCount =
+    document.querySelector("#completed-count");
+
+    function updateCompletedCount() {
+
+    const completedTasks = tasks.filter(function (task) {
+        return task.completed;
+    });
+
+    completedCount.textContent = completedTasks.length;
+}
+const completedCount =
+    document.querySelector("#completed-count");
+
+function updateCompletedCount() {
+
+    const completedTasks = tasks.filter(function (task) {
+        return task.completed;
+    });
+
+    completedCount.textContent = completedTasks.length;
+}
+
+renderTasks();
