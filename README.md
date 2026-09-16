@@ -57,34 +57,6 @@ nexus-productivity-dashboard/
 * Created initial project structure
 * Set up README documentation
 
-### Day 1 — HTML Foundation
-
-* Created semantic HTML structure
-* Built NEXUS sidebar navigation
-* Added Dashboard, Tasks, Goals, Analytics, Notes and Settings navigation
-* Added top navigation bar
-* Added user profile section
-* Added welcome section
-* Added productivity statistics cards
-* Added productivity chart structure
-* Added focus session / Pomodoro section
-
-### Day 2 — CSS Foundation & UI Design
-
-* Created complete dark-themed interface
-* Added responsive layout
-* Styled sidebar and navigation
-* Added glassmorphism effects
-* Added card-based dashboard design
-* Added hover animations and transitions
-* Added purple accent design system
-* Added gradient effects
-* Added productivity chart styling
-* Added timer styling and glow effect
-* Added responsive breakpoints for tablet and mobile
-* Improved typography, spacing and overall visual hierarchy
-
----
 
 ## 🛠️ Tech Stack
 
