@@ -48,14 +48,6 @@ nexus-productivity-dashboard/
 
 ## 📅 Development Progress
 
-### Day 0 — Git & Project Setup
-
-* Created GitHub repository
-* Installed and configured Git
-* Connected local project with GitHub
-* Cloned repository locally
-* Created initial project structure
-* Set up README documentation
 
 
 ## 🛠️ Tech Stack
