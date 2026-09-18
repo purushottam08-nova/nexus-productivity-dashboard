@@ -1,276 +1,416 @@
-console.log("NEXUS JavaScript loaded successfully!");
-const dateElement = document.querySelector("#current-date");
-const welcomeMessage = document.querySelector("#welcome-message");
+document.addEventListener("DOMContentLoaded", function () {
 
-const today = new Date();
+    const today = new Date();
 
-console.log(today);
-const formattedDate = today.toLocaleDateString("en-US", {
-    weekday: "long",
-    month: "long",
-    day: "numeric",
-    year: "numeric"
-});
-dateElement.textContent = formattedDate;
+    const dateElement = document.querySelector("#current-date");
+    const welcomeMessage = document.querySelector("#welcome-message");
+    const topbarGreeting = document.querySelector("#topbar-greeting");
 
-const hour = today.getHours();
+    const taskInput = document.querySelector("#task-input");
+    const addTaskButton = document.querySelector("#add-task-btn");
+    const taskList = document.querySelector("#task-list");
+    const taskCount = document.querySelector("#task-count");
+    const completedCount = document.querySelector("#completed-count");
 
-let greeting;
+    const timerDisplay = document.querySelector("#timer");
+    const startButton = document.querySelector("#start-btn");
+    const pauseButton = document.querySelector("#pause-btn");
+    const resetButton = document.querySelector("#reset-btn");
 
-if (hour < 12) {
-    greeting = "Good Morning";
-} else if (hour < 17) {
-    greeting = "Good Afternoon";
-} else if (hour < 21) {
-    greeting = "Good Evening";
-} else {
-    greeting = "Good Night";
-}
+    const focusTimeDisplay = document.querySelector("#focus-time");
 
-const topbarGreeting = document.querySelector("#topbar-greeting");
-topbarGreeting.textContent = greeting;
-welcomeMessage.textContent = `${greeting}. Let's get things done.`;
+    let tasks = JSON.parse(localStorage.getItem("nexusTasks")) || [];
 
-const navItems = document.querySelectorAll(".nav-item");
+    let completedFocusMinutes =
+        Number(localStorage.getItem("nexusFocusMinutes")) || 0;
 
-navItems.forEach(function (item) {
-    item.addEventListener("click", function () {
+    let timeLeft = 25 * 60;
+    let timerInterval = null;
+    let isRunning = false;
 
-        navItems.forEach(function (nav) {
-            nav.classList.remove("active");
+    function updateDateAndGreeting() {
+
+        const formattedDate = today.toLocaleDateString("en-US", {
+            weekday: "long",
+            month: "long",
+            day: "numeric",
+            year: "numeric"
         });
 
-        item.classList.add("active");
-    });
-});
+        const hour = today.getHours();
 
-let timeLeft = 25 * 60;
-let timerInterval = null;
+        let greeting;
 
-const timerDisplay = document.querySelector("#timer");
-const startButton = document.querySelector("#start-btn");
-
-function updateTimerDisplay() {
-    const minutes = Math.floor(timeLeft / 60);
-    const seconds = timeLeft % 60;
-
-    timerDisplay.textContent =
-        `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
-}
-
-startButton.addEventListener("click", function () {
-
-    if (timerInterval !== null) {
-        return;
-    }
-
-    startButton.textContent = "Focus Running...";
-
-    timerInterval = setInterval(function () {
-
-        if (timeLeft > 0) {
-            timeLeft--;
-            updateTimerDisplay();
+        if (hour < 12) {
+            greeting = "Good Morning";
+        } else if (hour < 17) {
+            greeting = "Good Afternoon";
+        } else if (hour < 21) {
+            greeting = "Good Evening";
         } else {
-            clearInterval(timerInterval);
-            timerInterval = null;
-            startButton.textContent = "Start Focus";
-            alert("Focus session completed!");
+            greeting = "Good Night";
         }
 
-    }, 1000);
-});
-
-setInterval(function () {
-
-}, 1000);
-clearInterval(timerInterval);
-
-
-const taskInput = document.querySelector("#task-input");
-const addTaskButton = document.querySelector("#add-task-btn");
-const taskList = document.querySelector("#task-list");
-const taskCount = document.querySelector("#task-count");
-
-function addTask() {
-
-    const taskText = taskInput.value.trim();
-
-    if (taskText === "") {
-        return;
-    }
-
-    const newTask = {
-        id: Date.now(),
-        text: taskText,
-        completed: false
-    };
-
-    tasks.push(newTask);
-
-    saveTasks();
-
-    taskInput.value = "";
-
-    renderTasks();
-}
-addTaskButton.addEventListener("click", addTask);
-
-taskInput.addEventListener("keydown", function (event) {
-
-    if (event.key === "Enter") {
-        addTask();
-    }
-
-});
-tasks.push(newTask);
-
-taskList.addEventListener("change", function (event) {
-
-    if (!event.target.classList.contains("task-checkbox")) {
-        return;
-    }
-
-    const taskId = Number(event.target.dataset.id);
-
-    const task = tasks.find(function (task) {
-        return task.id === taskId;
-    });
-
-    if (task) {
-        task.completed = event.target.checked;
-    }
-
-    saveTasks();
-
-    renderTasks();
-
-});
-taskList.addEventListener("click", function (event) {
-
-    if (!event.target.classList.contains("delete-task")) {
-        return;
-    }
-
-    const taskId = Number(event.target.dataset.id);
-
-    tasks = tasks.filter(function (task) {
-        return task.id !== taskId;
-    });
-
-    saveTasks();
-
-    renderTasks();
-
-});
-
-taskList.addEventListener("click", function (event) {
-
-    if (event.target.classList.contains("delete-task")) {
-
-        const taskItem = event.target.closest(".task-item");
-
-        taskItem.remove();
-
-        updateTaskCount();
-    }
-
-});
-
-function updateTaskCount() {
-
-    const totalTasks =
-        document.querySelectorAll(".task-item").length;
-
-    taskCount.textContent =
-        `${totalTasks} ${totalTasks === 1 ? "Task" : "Tasks"}`;
-}
-
-let tasks = JSON.parse(localStorage.getItem("nexusTasks")) || [];
-
-function saveTasks() {
-
-    localStorage.setItem(
-        "nexusTasks",
-        JSON.stringify(tasks)
-    );
-
-}
-
-function renderTasks() {
-
-    taskList.innerHTML = "";
-
-    tasks.forEach(function (task) {
-
-        const taskItem = document.createElement("div");
-
-        taskItem.classList.add("task-item");
-
-        if (task.completed) {
-            taskItem.classList.add("completed");
+        if (dateElement) {
+            dateElement.textContent = formattedDate;
         }
 
-        taskItem.innerHTML = `
-            <div class="task-content">
+        if (topbarGreeting) {
+            topbarGreeting.textContent = greeting;
+        }
 
-                <input
-                    type="checkbox"
-                    class="task-checkbox"
-                    data-id="${task.id}"
-                    ${task.completed ? "checked" : ""}
-                >
+        if (welcomeMessage) {
+            welcomeMessage.textContent =
+                `${greeting}. Let's get things done.`;
+        }
+    }
 
-                <span class="task-text">
-                    ${task.text}
-                </span>
+    function setupNavigation() {
 
-            </div>
+        const navItems = document.querySelectorAll(".nav-item");
 
-            <button
-                class="delete-task"
-                data-id="${task.id}"
-            >
-                ×
-            </button>
-        `;
+        navItems.forEach(function (item) {
 
-        taskList.appendChild(taskItem);
+            item.addEventListener("click", function (event) {
 
-    });
+                event.preventDefault();
 
-    updateTaskCount();
-    updateCompletedCount();
-}
+                navItems.forEach(function (nav) {
+                    nav.classList.remove("active");
+                });
 
-function updateTaskCount() {
+                item.classList.add("active");
+            });
 
-    const totalTasks = tasks.length;
+        });
+    }
 
-    taskCount.textContent =
-        `${totalTasks} ${totalTasks === 1 ? "Task" : "Tasks"}`;
-}
-const completedCount =
-    document.querySelector("#completed-count");
+    function saveTasks() {
+
+        localStorage.setItem(
+            "nexusTasks",
+            JSON.stringify(tasks)
+        );
+
+    }
+
+    function updateTaskCount() {
+
+        const totalTasks = tasks.length;
+
+        if (taskCount) {
+            taskCount.textContent =
+                `${totalTasks} ${totalTasks === 1 ? "Task" : "Tasks"}`;
+        }
+    }
 
     function updateCompletedCount() {
 
-    const completedTasks = tasks.filter(function (task) {
-        return task.completed;
-    });
+        const completedTasks = tasks.filter(function (task) {
+            return task.completed;
+        });
 
-    completedCount.textContent = completedTasks.length;
-}
-const completedCount =
-    document.querySelector("#completed-count");
+        if (completedCount) {
+            completedCount.textContent = completedTasks.length;
+        }
+    }
 
-function updateCompletedCount() {
+    function renderTasks() {
 
-    const completedTasks = tasks.filter(function (task) {
-        return task.completed;
-    });
+        if (!taskList) {
+            return;
+        }
 
-    completedCount.textContent = completedTasks.length;
-}
+        taskList.innerHTML = "";
 
-renderTasks();
+        tasks.forEach(function (task) {
+
+            const taskItem = document.createElement("div");
+
+            taskItem.classList.add("task-item");
+
+            if (task.completed) {
+                taskItem.classList.add("completed");
+            }
+
+            taskItem.innerHTML = `
+                <div class="task-content">
+                    <input
+                        type="checkbox"
+                        class="task-checkbox"
+                        data-id="${task.id}"
+                        ${task.completed ? "checked" : ""}
+                    >
+
+                    <span class="task-text">
+                        ${task.text}
+                    </span>
+                </div>
+
+                <button
+                    class="delete-task"
+                    data-id="${task.id}"
+                >
+                    ×
+                </button>
+            `;
+
+            taskList.appendChild(taskItem);
+        });
+
+        updateTaskCount();
+        updateCompletedCount();
+    }
+
+    function addTask() {
+
+        if (!taskInput) {
+            return;
+        }
+
+        const taskText = taskInput.value.trim();
+
+        if (taskText === "") {
+            return;
+        }
+
+        const newTask = {
+            id: Date.now(),
+            text: taskText,
+            completed: false
+        };
+
+        tasks.push(newTask);
+
+        saveTasks();
+
+        taskInput.value = "";
+
+        renderTasks();
+
+        taskInput.focus();
+    }
+
+    function setupTaskEvents() {
+
+        if (addTaskButton) {
+            addTaskButton.addEventListener("click", addTask);
+        }
+
+        if (taskInput) {
+            taskInput.addEventListener("keydown", function (event) {
+
+                if (event.key === "Enter") {
+                    addTask();
+                }
+
+            });
+        }
+
+        if (taskList) {
+
+            taskList.addEventListener("change", function (event) {
+
+                if (!event.target.classList.contains("task-checkbox")) {
+                    return;
+                }
+
+                const taskId =
+                    Number(event.target.dataset.id);
+
+                const task = tasks.find(function (task) {
+                    return task.id === taskId;
+                });
+
+                if (task) {
+                    task.completed = event.target.checked;
+                }
+
+                saveTasks();
+
+                renderTasks();
+            });
+
+            taskList.addEventListener("click", function (event) {
+
+                if (!event.target.classList.contains("delete-task")) {
+                    return;
+                }
+
+                const taskId =
+                    Number(event.target.dataset.id);
+
+                tasks = tasks.filter(function (task) {
+                    return task.id !== taskId;
+                });
+
+                saveTasks();
+
+                renderTasks();
+            });
+        }
+    }
+
+    function updateTimerDisplay() {
+
+        if (!timerDisplay) {
+            return;
+        }
+
+        const minutes = Math.floor(timeLeft / 60);
+        const seconds = timeLeft % 60;
+
+        timerDisplay.textContent =
+            `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+    }
+
+    function startTimer() {
+
+        if (isRunning) {
+            return;
+        }
+
+        isRunning = true;
+
+        if (startButton) {
+            startButton.textContent = "Running...";
+        }
+
+        timerInterval = setInterval(function () {
+
+            if (timeLeft > 0) {
+
+                timeLeft--;
+
+                updateTimerDisplay();
+
+            } else {
+
+                completeSession();
+
+            }
+
+        }, 1000);
+    }
+
+    function pauseTimer() {
+
+        if (!isRunning) {
+            return;
+        }
+
+        clearInterval(timerInterval);
+
+        timerInterval = null;
+
+        isRunning = false;
+
+        if (startButton) {
+            startButton.textContent = "Resume";
+        }
+    }
+
+    function resetTimer() {
+
+        clearInterval(timerInterval);
+
+        timerInterval = null;
+
+        isRunning = false;
+
+        timeLeft = 25 * 60;
+
+        if (startButton) {
+            startButton.textContent = "Start";
+        }
+
+        updateTimerDisplay();
+    }
+
+    function saveFocusTime() {
+
+        localStorage.setItem(
+            "nexusFocusMinutes",
+            completedFocusMinutes
+        );
+    }
+
+    function updateFocusTime() {
+
+        if (!focusTimeDisplay) {
+            return;
+        }
+
+        if (completedFocusMinutes >= 60) {
+
+            const hours =
+                Math.floor(completedFocusMinutes / 60);
+
+            const minutes =
+                completedFocusMinutes % 60;
+
+            focusTimeDisplay.textContent =
+                `${hours}h ${minutes}m`;
+
+        } else {
+
+            focusTimeDisplay.textContent =
+                `${completedFocusMinutes}m`;
+        }
+    }
+
+    function completeSession() {
+
+        clearInterval(timerInterval);
+
+        timerInterval = null;
+
+        isRunning = false;
+
+        completedFocusMinutes += 25;
+
+        saveFocusTime();
+
+        updateFocusTime();
+
+        timeLeft = 25 * 60;
+
+        if (startButton) {
+            startButton.textContent = "Start";
+        }
+
+        updateTimerDisplay();
+
+        alert("Focus session completed! Great work.");
+    }
+
+    function setupTimerEvents() {
+
+        if (startButton) {
+            startButton.addEventListener("click", startTimer);
+        }
+
+        if (pauseButton) {
+            pauseButton.addEventListener("click", pauseTimer);
+        }
+
+        if (resetButton) {
+            resetButton.addEventListener("click", resetTimer);
+        }
+    }
+
+    updateDateAndGreeting();
+
+    setupNavigation();
+
+    setupTaskEvents();
+
+    setupTimerEvents();
+
+    renderTasks();
+
+    updateTimerDisplay();
+
+    updateFocusTime();
+
+});

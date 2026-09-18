@@ -3,49 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEXUS- Productivity command center</title>
+
+    <title>NEXUS — Productivity Command Center</title>
+
     <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
+
     <div class="app">
 
         <aside class="sidebar">
-        
+
             <div class="logo">
                 <h1>NEXUS</h1>
                 <span>COMMAND CENTER</span>
             </div>
 
             <nav class="navigation">
-            <a href="#" class="nav-item active">
-                <span>⌂</span>
-                Dashboard
-            </a>
 
-            <a href="#" class="nav-item">
-              <span>✓</span>
-              Tasks
-            </a>
+                <a href="#" class="nav-item active">
+                    <span>⌂</span>
+                    Dashboard
+                </a>
 
-            <a href="#" class="nav-item">
-                 <span>◎</span>
-                 Goals
-            </a>
+                <a href="#" class="nav-item">
+                    <span>✓</span>
+                    Tasks
+                </a>
 
-            <a href="#" class="nav-item">
-                 <span>◈</span>
-                 Analytics
-            </a>
+                <a href="#" class="nav-item">
+                    <span>◎</span>
+                    Goals
+                </a>
 
-            <a href="#" class="nav-item">
-                 <span>□</span>
-                 Notes
-</a>
+                <a href="#" class="nav-item">
+                    <span>◈</span>
+                    Analytics
+                </a>
 
-            <a href="#" class="nav-item">
-              <span>⚙</span>
-                 Settings
-            </a>
+                <a href="#" class="nav-item">
+                    <span>□</span>
+                    Notes
+                </a>
+
+                <a href="#" class="nav-item">
+                    <span>⚙</span>
+                    Settings
+                </a>
+
             </nav>
 
         </aside>
@@ -54,6 +60,7 @@
         <main class="main-content">
 
             <header class="topbar">
+
                 <div>
                     <p>PRODUCTIVITY OS</p>
                     <h2 id="topbar-greeting">Good Evening</h2>
@@ -63,12 +70,20 @@
                     <span>Tanmay</span>
                     <div class="avatar">T</div>
                 </div>
+
             </header>
 
 
             <section class="welcome">
-                <p id="current-date">Loading date...</p>
-                <h1 id="welcome-message">Let's get things done.</h1>
+
+                <p id="current-date">
+                    Loading date...
+                </p>
+
+                <h1 id="welcome-message">
+                    Let's get things done.
+                </h1>
+
             </section>
 
 
@@ -76,26 +91,37 @@
 
                 <div class="stat-card">
                     <span>DAILY PROGRESS</span>
+
                     <h2>82%</h2>
-                    <p>Great progress today</p>
+
+                    <p>Keep pushing</p>
                 </div>
+
 
                 <div class="stat-card">
                     <span>FOCUS TIME</span>
-                    <h2>6.4h</h2>
-                    <p>+1.2h from yesterday</p>
+
+                    <h2 id="focus-time">0m</h2>
+
+                    <p>Completed focus sessions</p>
                 </div>
+
 
                 <div class="stat-card">
                     <span>TASKS DONE</span>
+
                     <h2 id="completed-count">0</h2>
+
                     <p>Completed tasks</p>
                 </div>
 
+
                 <div class="stat-card">
                     <span>STREAK</span>
-                    <h2>7 Days</h2>
-                    <p>Keep it going 🔥</p>
+
+                    <h2>7</h2>
+
+                    <p>Days in a row</p>
                 </div>
 
             </section>
@@ -103,75 +129,139 @@
 
             <section class="dashboard-grid">
 
-                <section class="tasks-section">
-
-                    <div class="tasks-header">
-                        <div>
-                            <p>TODAY'S TASKS</p>
-                            <h2>Task Manager</h2>
-                        </div>
-
-                        <span id="task-count">0 Tasks</span>
-                    </div>
-
-                    <div class="task-input">
-                        <input
-                            type="text"
-                            id="task-input"
-                            placeholder="What needs to be done?"
-                        >
-
-                        <button id="add-task-btn">
-                            Add Task
-                        </button>
-                    </div>
-
-                    <div id="task-list">
-                    </div>
-
-                </section>
 
                 <div class="productivity-panel">
+
                     <div class="panel-header">
+
                         <h2>Productivity</h2>
-                        <span>This Week</span>
+
+                        <span>THIS WEEK</span>
+
                     </div>
+
 
                     <div class="chart">
+
                         <div class="chart-bar" style="height: 45%;"></div>
+
                         <div class="chart-bar" style="height: 65%;"></div>
+
                         <div class="chart-bar" style="height: 55%;"></div>
+
                         <div class="chart-bar" style="height: 80%;"></div>
+
                         <div class="chart-bar" style="height: 70%;"></div>
+
                         <div class="chart-bar" style="height: 90%;"></div>
+
                         <div class="chart-bar" style="height: 75%;"></div>
+
                     </div>
 
+
                     <div class="chart-labels">
-                     <span>M</span>
-                      <span>T</span>
-                     <span>W</span>
-                     <span>T</span>
-                     <span>F</span>
-                     <span>S</span>
-                     <span>S</span>
+
+                        <span>M</span>
+                        <span>T</span>
+                        <span>W</span>
+                        <span>T</span>
+                        <span>F</span>
+                        <span>S</span>
+                        <span>S</span>
+
                     </div>
+
                 </div>
 
 
                 <div class="focus-panel">
+
                     <div class="panel-header">
+
                         <h2>Focus Session</h2>
-                        <span>Pomodoro</span>
+
+                        <span>POMODORO</span>
+
                     </div>
+
 
                     <div class="timer" id="timer">
                         25:00
                     </div>
 
-                    <button class="start-btn" id="start-btn">
-                        Start Focus
+
+                    <div class="timer-controls">
+
+                        <button
+                            class="timer-btn primary"
+                            id="start-btn"
+                        >
+                            Start
+                        </button>
+
+
+                        <button
+                            class="timer-btn"
+                            id="pause-btn"
+                        >
+                            Pause
+                        </button>
+
+
+                        <button
+                            class="timer-btn"
+                            id="reset-btn"
+                        >
+                            Reset
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <section class="tasks-section">
+
+                <div class="tasks-header">
+
+                    <div>
+
+                        <p>TODAY'S TASKS</p>
+
+                        <h2>Task Manager</h2>
+
+                    </div>
+
+
+                    <span id="task-count">
+                        0 Tasks
+                    </span>
+
+                </div>
+
+
+                <div class="task-input">
+
+                    <input
+                        type="text"
+                        id="task-input"
+                        placeholder="What needs to be done?"
+                        autocomplete="off"
+                    >
+
+
+                    <button id="add-task-btn">
+                        Add Task
                     </button>
+
+                </div>
+
+
+                <div id="task-list">
+
                 </div>
 
             </section>
@@ -182,5 +272,6 @@
 
 
     <script src="js/script.js"></script>
+
 </body>
 </html>

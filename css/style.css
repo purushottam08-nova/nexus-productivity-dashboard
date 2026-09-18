@@ -527,6 +527,34 @@ body {
     color: #ffffff;
 }
 
+.timer-controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+}
+
+.timer-btn {
+    padding: 11px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.timer-btn:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+}
+
+.timer-btn.primary {
+    border: none;
+    background: linear-gradient(135deg, #ffffff, #dcd7ff);
+    color: #08090d;
+}
+
 
 /* for mobile */
 @media (max-width: 900px) {
@@ -570,5 +598,9 @@ body {
 
     .welcome h1 {
         font-size: 32px;
+    }
+
+    .timer-controls {
+        grid-template-columns: 1fr;
     }
 }
