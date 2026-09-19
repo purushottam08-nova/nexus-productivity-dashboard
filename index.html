@@ -92,7 +92,7 @@
                 <div class="stat-card">
                     <span>DAILY PROGRESS</span>
 
-                    <h2>82%</h2>
+                    <h2 id="daily-progress">0%</h2>
 
                     <p>Keep pushing</p>
                 </div>
@@ -119,7 +119,7 @@
                 <div class="stat-card">
                     <span>STREAK</span>
 
-                    <h2>7</h2>
+                    <h2 id="streak-count">0</h2>
 
                     <p>Days in a row</p>
                 </div>
@@ -242,7 +242,23 @@
 
                 </div>
 
+                <div class="task-filters">
 
+                    <button class="filter-btn active" data-filter="all">
+                        All
+                    </button>
+
+                    <button class="filter-btn" data-filter="active">
+                        Active
+                    </button>
+
+                    <button class="filter-btn" data-filter="completed">
+                        Completed
+                    </button>
+
+                </div>
+
+                
                 <div class="task-input">
 
                     <input
@@ -252,6 +268,21 @@
                         autocomplete="off"
                     >
 
+                    <select id="task-priority">
+
+                        <option value="low">
+                            Low Priority
+                        </option>
+
+                        <option value="medium" selected>
+                            Medium Priority
+                        </option>
+
+                        <option value="high">
+                            High Priority
+                        </option>
+
+                    </select>
 
                     <button id="add-task-btn">
                         Add Task

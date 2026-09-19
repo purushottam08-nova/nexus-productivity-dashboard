@@ -17,7 +17,16 @@ document.addEventListener("DOMContentLoaded", function () {
     const pauseButton = document.querySelector("#pause-btn");
     const resetButton = document.querySelector("#reset-btn");
 
+    const dailyProgress = document.querySelector("#daily-progress");
+    const streakCount = document.querySelector("#streak-count");
+
     const focusTimeDisplay = document.querySelector("#focus-time");
+
+    const taskPriority = document.querySelector("#task-priority");
+
+    const filterButtons =  document.querySelectorAll(".filter-btn");
+
+    let currentFilter = "all";
 
     let tasks = JSON.parse(localStorage.getItem("nexusTasks")) || [];
 
@@ -64,6 +73,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 `${greeting}. Let's get things done.`;
         }
     }
+    
 
     function setupNavigation() {
 
@@ -117,35 +127,88 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function renderTasks() {
 
-        if (!taskList) {
-            return;
+    if (!taskList) {
+        return;
+    }
+
+    taskList.innerHTML = "";
+
+    const filteredTasks = tasks.filter(function (task) {
+
+        if (currentFilter === "active") {
+            return !task.completed;
         }
 
-        taskList.innerHTML = "";
+        if (currentFilter === "completed") {
+            return task.completed;
+        }
 
-        tasks.forEach(function (task) {
+        return true;
+    });
 
-            const taskItem = document.createElement("div");
+    if (filteredTasks.length === 0) {
 
-            taskItem.classList.add("task-item");
+        const emptyState = document.createElement("div");
 
-            if (task.completed) {
-                taskItem.classList.add("completed");
-            }
+        emptyState.classList.add("empty-state");
 
-            taskItem.innerHTML = `
-                <div class="task-content">
-                    <input
-                        type="checkbox"
-                        class="task-checkbox"
-                        data-id="${task.id}"
-                        ${task.completed ? "checked" : ""}
-                    >
+        if (currentFilter === "completed") {
 
-                    <span class="task-text">
-                        ${task.text}
-                    </span>
-                </div>
+            emptyState.textContent =
+                "No completed tasks yet.";
+
+        } else if (currentFilter === "active") {
+
+            emptyState.textContent =
+                "No active tasks.";
+
+        } else {
+
+            emptyState.textContent =
+                "No tasks yet. Add your first task.";
+
+        }
+
+        taskList.appendChild(emptyState);
+
+        updateTaskCount();
+        updateCompletedCount();
+        updateDailyProgress();
+
+        return;
+    }
+
+    filteredTasks.forEach(function (task) {
+
+        const taskItem = document.createElement("div");
+
+        taskItem.classList.add("task-item");
+
+        if (task.completed) {
+            taskItem.classList.add("completed");
+        }
+
+        taskItem.innerHTML = `
+            <div class="task-content">
+
+                <input
+                    type="checkbox"
+                    class="task-checkbox"
+                    data-id="${task.id}"
+                    ${task.completed ? "checked" : ""}
+                >
+
+                <span class="task-text">
+                    ${task.text}
+                </span>
+
+            </div>
+
+            <div class="task-actions">
+
+                <span class="priority-badge ${task.priority || "medium"}">
+                    ${(task.priority || "medium").toUpperCase()}
+                </span>
 
                 <button
                     class="delete-task"
@@ -153,14 +216,26 @@ document.addEventListener("DOMContentLoaded", function () {
                 >
                     ×
                 </button>
-            `;
 
-            taskList.appendChild(taskItem);
-        });
+            </div>
+        `;
+
+        taskList.appendChild(taskItem);
+    });
+
+    updateTaskCount();
+    updateCompletedCount();
+    updateDailyProgress();
+}
+        const filterButtons =
+            document.querySelectorAll(".filter-btn");
+
+        let currentFilter = "all";
 
         updateTaskCount();
         updateCompletedCount();
-    }
+        updateDailyProgress();
+    )
 
     function addTask() {
 
@@ -174,10 +249,13 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
+        const priority = taskPriority.value;
+
         const newTask = {
             id: Date.now(),
             text: taskText,
-            completed: false
+            completed: false,
+            priority: priority
         };
 
         tasks.push(newTask);
@@ -187,6 +265,8 @@ document.addEventListener("DOMContentLoaded", function () {
         taskInput.value = "";
 
         renderTasks();
+
+        updateStreak();
 
         taskInput.focus();
     }
@@ -399,18 +479,107 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    updateDateAndGreeting();
+    function updateDailyProgress() {
 
-    setupNavigation();
+    if (!dailyProgress) {
+        return;
+    }
 
-    setupTaskEvents();
+    if (tasks.length === 0) {
+        dailyProgress.textContent = "0%";
+        return;
+    }
 
-    setupTimerEvents();
+    const completedTasks = tasks.filter(function (task) {
+        return task.completed;
+    }).length;
 
-    renderTasks();
+    const progress = Math.round(
+        (completedTasks / tasks.length) * 100
+    );
 
-    updateTimerDisplay();
+    dailyProgress.textContent = `${progress}%`;
+}
 
-    updateFocusTime();
 
-});
+let streakData = JSON.parse(
+    localStorage.getItem("nexusStreak")
+) || {
+    streak: 0,
+    lastActiveDate: null
+};
+
+function updateStreak() {
+
+    const todayDate = new Date().toISOString().split("T")[0];
+
+    if (streakData.lastActiveDate === todayDate) {
+
+        if (streakCount) {
+            streakCount.textContent = streakData.streak;
+        }
+
+        return;
+    }
+
+    if (streakData.lastActiveDate === null) {
+
+        streakData.streak = 1;
+
+    } else {
+
+        const lastDate = new Date(
+            streakData.lastActiveDate
+        );
+
+        const currentDate = new Date(todayDate);
+
+        const difference =
+            Math.floor(
+                (currentDate - lastDate) /
+                (1000 * 60 * 60 * 24)
+            );
+
+        if (difference === 1) {
+
+            streakData.streak++;
+
+        } else if (difference > 1) {
+
+            streakData.streak = 1;
+        }
+    }
+
+    streakData.lastActiveDate = todayDate;
+
+    localStorage.setItem(
+        "nexusStreak",
+        JSON.stringify(streakData)
+    );
+
+    if (streakCount) {
+        streakCount.textContent = streakData.streak;
+    }
+}
+
+    
+updateDateAndGreeting();
+
+setupNavigation();
+
+setupTaskEvents();
+
+setupTimerEvents();
+
+renderTasks();
+
+updateTimerDisplay();
+
+updateFocusTime();
+
+if (streakCount) {
+    streakCount.textContent = streakData.streak;
+}
+
+
+
