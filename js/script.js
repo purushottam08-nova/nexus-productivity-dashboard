@@ -22,41 +22,59 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const focusTimeDisplay = document.querySelector("#focus-time");
 
-    const taskPriority = document.querySelector("#task-priority");
+    const taskPriority =
+        document.querySelector("#task-priority");
 
-    const filterButtons =  document.querySelectorAll(".filter-btn");
+    const filterButtons =
+        document.querySelectorAll(".filter-btn");
 
     let currentFilter = "all";
 
-    let tasks = JSON.parse(localStorage.getItem("nexusTasks")) || [];
+    let tasks =
+        JSON.parse(localStorage.getItem("nexusTasks")) || [];
 
     let completedFocusMinutes =
         Number(localStorage.getItem("nexusFocusMinutes")) || 0;
+
+    let streakData =
+        JSON.parse(localStorage.getItem("nexusStreak")) || {
+            streak: 0,
+            lastActiveDate: null
+        };
 
     let timeLeft = 25 * 60;
     let timerInterval = null;
     let isRunning = false;
 
+
     function updateDateAndGreeting() {
 
-        const formattedDate = today.toLocaleDateString("en-US", {
-            weekday: "long",
-            month: "long",
-            day: "numeric",
-            year: "numeric"
-        });
+        const formattedDate =
+            today.toLocaleDateString("en-US", {
+                weekday: "long",
+                month: "long",
+                day: "numeric",
+                year: "numeric"
+            });
 
         const hour = today.getHours();
 
         let greeting;
 
         if (hour < 12) {
+
             greeting = "Good Morning";
+
         } else if (hour < 17) {
+
             greeting = "Good Afternoon";
+
         } else if (hour < 21) {
+
             greeting = "Good Evening";
+
         } else {
+
             greeting = "Good Night";
         }
 
@@ -73,11 +91,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 `${greeting}. Let's get things done.`;
         }
     }
-    
+
 
     function setupNavigation() {
 
-        const navItems = document.querySelectorAll(".nav-item");
+        const navItems =
+            document.querySelectorAll(".nav-item");
 
         navItems.forEach(function (item) {
 
@@ -91,9 +110,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 item.classList.add("active");
             });
-
         });
     }
+
 
     function saveTasks() {
 
@@ -101,141 +120,237 @@ document.addEventListener("DOMContentLoaded", function () {
             "nexusTasks",
             JSON.stringify(tasks)
         );
-
     }
+
 
     function updateTaskCount() {
 
         const totalTasks = tasks.length;
 
         if (taskCount) {
+
             taskCount.textContent =
                 `${totalTasks} ${totalTasks === 1 ? "Task" : "Tasks"}`;
         }
     }
 
+
     function updateCompletedCount() {
 
-        const completedTasks = tasks.filter(function (task) {
-            return task.completed;
-        });
+        const completedTasks =
+            tasks.filter(function (task) {
+                return task.completed;
+            });
 
         if (completedCount) {
-            completedCount.textContent = completedTasks.length;
+            completedCount.textContent =
+                completedTasks.length;
         }
     }
+
+
+    function updateDailyProgress() {
+
+        if (!dailyProgress) {
+            return;
+        }
+
+        if (tasks.length === 0) {
+
+            dailyProgress.textContent = "0%";
+
+            return;
+        }
+
+        const completedTasks =
+            tasks.filter(function (task) {
+                return task.completed;
+            }).length;
+
+        const progress =
+            Math.round(
+                (completedTasks / tasks.length) * 100
+            );
+
+        dailyProgress.textContent =
+            `${progress}%`;
+    }
+
 
     function renderTasks() {
 
-    if (!taskList) {
-        return;
+        if (!taskList) {
+            return;
+        }
+
+        taskList.innerHTML = "";
+
+        const filteredTasks =
+            tasks.filter(function (task) {
+
+                if (currentFilter === "active") {
+                    return !task.completed;
+                }
+
+                if (currentFilter === "completed") {
+                    return task.completed;
+                }
+
+                return true;
+            });
+
+
+        if (filteredTasks.length === 0) {
+
+            const emptyState =
+                document.createElement("div");
+
+            emptyState.classList.add("empty-state");
+
+            if (currentFilter === "completed") {
+
+                emptyState.textContent =
+                    "No completed tasks yet.";
+
+            } else if (currentFilter === "active") {
+
+                emptyState.textContent =
+                    "No active tasks.";
+
+            } else {
+
+                emptyState.textContent =
+                    "No tasks yet. Add your first task.";
+            }
+
+            taskList.appendChild(emptyState);
+
+            updateTaskCount();
+            updateCompletedCount();
+            updateDailyProgress();
+
+            return;
+        }
+
+
+        filteredTasks.forEach(function (task) {
+
+            const taskItem =
+                document.createElement("div");
+
+            taskItem.classList.add("task-item");
+
+            if (task.completed) {
+                taskItem.classList.add("completed");
+            }
+
+            const priority =
+                task.priority || "medium";
+
+            taskItem.innerHTML = `
+                <div class="task-content">
+
+                    <input
+                        type="checkbox"
+                        class="task-checkbox"
+                        data-id="${task.id}"
+                        ${task.completed ? "checked" : ""}
+                    >
+
+                    <span class="task-text">
+                        ${task.text}
+                    </span>
+
+                </div>
+
+                <div class="task-actions">
+
+                    <span class="priority-badge ${priority}">
+                        ${priority.toUpperCase()}
+                    </span>
+
+                    <button
+                        class="delete-task"
+                        data-id="${task.id}"
+                    >
+                        ×
+                    </button>
+
+                </div>
+            `;
+
+            taskList.appendChild(taskItem);
+        });
+
+
+        updateTaskCount();
+        updateCompletedCount();
+        updateDailyProgress();
     }
 
-    taskList.innerHTML = "";
 
-    const filteredTasks = tasks.filter(function (task) {
+    function updateStreak() {
 
-        if (currentFilter === "active") {
-            return !task.completed;
+        const todayDate =
+            new Date().toISOString().split("T")[0];
+
+        if (streakData.lastActiveDate === todayDate) {
+
+            if (streakCount) {
+                streakCount.textContent =
+                    streakData.streak;
+            }
+
+            return;
         }
 
-        if (currentFilter === "completed") {
-            return task.completed;
-        }
 
-        return true;
-    });
+        if (streakData.lastActiveDate === null) {
 
-    if (filteredTasks.length === 0) {
-
-        const emptyState = document.createElement("div");
-
-        emptyState.classList.add("empty-state");
-
-        if (currentFilter === "completed") {
-
-            emptyState.textContent =
-                "No completed tasks yet.";
-
-        } else if (currentFilter === "active") {
-
-            emptyState.textContent =
-                "No active tasks.";
+            streakData.streak = 1;
 
         } else {
 
-            emptyState.textContent =
-                "No tasks yet. Add your first task.";
+            const lastDate =
+                new Date(streakData.lastActiveDate);
 
+            const currentDate =
+                new Date(todayDate);
+
+            const difference =
+                Math.floor(
+                    (currentDate - lastDate) /
+                    (1000 * 60 * 60 * 24)
+                );
+
+
+            if (difference === 1) {
+
+                streakData.streak++;
+
+            } else if (difference > 1) {
+
+                streakData.streak = 1;
+            }
         }
 
-        taskList.appendChild(emptyState);
 
-        updateTaskCount();
-        updateCompletedCount();
-        updateDailyProgress();
+        streakData.lastActiveDate =
+            todayDate;
 
-        return;
+
+        localStorage.setItem(
+            "nexusStreak",
+            JSON.stringify(streakData)
+        );
+
+
+        if (streakCount) {
+            streakCount.textContent =
+                streakData.streak;
+        }
     }
 
-    filteredTasks.forEach(function (task) {
-
-        const taskItem = document.createElement("div");
-
-        taskItem.classList.add("task-item");
-
-        if (task.completed) {
-            taskItem.classList.add("completed");
-        }
-
-        taskItem.innerHTML = `
-            <div class="task-content">
-
-                <input
-                    type="checkbox"
-                    class="task-checkbox"
-                    data-id="${task.id}"
-                    ${task.completed ? "checked" : ""}
-                >
-
-                <span class="task-text">
-                    ${task.text}
-                </span>
-
-            </div>
-
-            <div class="task-actions">
-
-                <span class="priority-badge ${task.priority || "medium"}">
-                    ${(task.priority || "medium").toUpperCase()}
-                </span>
-
-                <button
-                    class="delete-task"
-                    data-id="${task.id}"
-                >
-                    ×
-                </button>
-
-            </div>
-        `;
-
-        taskList.appendChild(taskItem);
-    });
-
-    updateTaskCount();
-    updateCompletedCount();
-    updateDailyProgress();
-}
-        const filterButtons =
-            document.querySelectorAll(".filter-btn");
-
-        let currentFilter = "all";
-
-        updateTaskCount();
-        updateCompletedCount();
-        updateDailyProgress();
-    )
 
     function addTask() {
 
@@ -243,13 +358,15 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        const taskText = taskInput.value.trim();
+        const taskText =
+            taskInput.value.trim();
 
         if (taskText === "") {
             return;
         }
 
-        const priority = taskPriority.value;
+        const priority =
+            taskPriority.value;
 
         const newTask = {
             id: Date.now(),
@@ -257,6 +374,7 @@ document.addEventListener("DOMContentLoaded", function () {
             completed: false,
             priority: priority
         };
+
 
         tasks.push(newTask);
 
@@ -271,65 +389,140 @@ document.addEventListener("DOMContentLoaded", function () {
         taskInput.focus();
     }
 
+
     function setupTaskEvents() {
 
         if (addTaskButton) {
-            addTaskButton.addEventListener("click", addTask);
+
+            addTaskButton.addEventListener(
+                "click",
+                addTask
+            );
         }
+
 
         if (taskInput) {
-            taskInput.addEventListener("keydown", function (event) {
 
-                if (event.key === "Enter") {
-                    addTask();
+            taskInput.addEventListener(
+                "keydown",
+                function (event) {
+
+                    if (event.key === "Enter") {
+                        addTask();
+                    }
                 }
-
-            });
+            );
         }
+
 
         if (taskList) {
 
-            taskList.addEventListener("change", function (event) {
+            taskList.addEventListener(
+                "change",
+                function (event) {
 
-                if (!event.target.classList.contains("task-checkbox")) {
-                    return;
+                    if (
+                        !event.target.classList.contains(
+                            "task-checkbox"
+                        )
+                    ) {
+                        return;
+                    }
+
+
+                    const taskId =
+                        Number(
+                            event.target.dataset.id
+                        );
+
+
+                    const task =
+                        tasks.find(function (task) {
+
+                            return task.id === taskId;
+
+                        });
+
+
+                    if (task) {
+
+                        task.completed =
+                            event.target.checked;
+                    }
+
+
+                    saveTasks();
+
+                    renderTasks();
                 }
+            );
 
-                const taskId =
-                    Number(event.target.dataset.id);
 
-                const task = tasks.find(function (task) {
-                    return task.id === taskId;
-                });
+            taskList.addEventListener(
+                "click",
+                function (event) {
 
-                if (task) {
-                    task.completed = event.target.checked;
+                    if (
+                        !event.target.classList.contains(
+                            "delete-task"
+                        )
+                    ) {
+                        return;
+                    }
+
+
+                    const taskId =
+                        Number(
+                            event.target.dataset.id
+                        );
+
+
+                    tasks =
+                        tasks.filter(function (task) {
+
+                            return task.id !== taskId;
+
+                        });
+
+
+                    saveTasks();
+
+                    renderTasks();
                 }
-
-                saveTasks();
-
-                renderTasks();
-            });
-
-            taskList.addEventListener("click", function (event) {
-
-                if (!event.target.classList.contains("delete-task")) {
-                    return;
-                }
-
-                const taskId =
-                    Number(event.target.dataset.id);
-
-                tasks = tasks.filter(function (task) {
-                    return task.id !== taskId;
-                });
-
-                saveTasks();
-
-                renderTasks();
-            });
+            );
         }
+
+
+        filterButtons.forEach(function (button) {
+
+            button.addEventListener(
+                "click",
+                function () {
+
+                    filterButtons.forEach(
+                        function (btn) {
+
+                            btn.classList.remove(
+                                "active"
+                            );
+
+                        }
+                    );
+
+
+                    button.classList.add("active");
+
+
+                    currentFilter =
+                        button.dataset.filter;
+
+
+                    renderTasks();
+                }
+            );
+        });
     }
+
 
     function updateTimerDisplay() {
 
@@ -337,12 +530,17 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        const minutes = Math.floor(timeLeft / 60);
-        const seconds = timeLeft % 60;
+        const minutes =
+            Math.floor(timeLeft / 60);
+
+        const seconds =
+            timeLeft % 60;
+
 
         timerDisplay.textContent =
             `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
     }
+
 
     function startTimer() {
 
@@ -352,26 +550,30 @@ document.addEventListener("DOMContentLoaded", function () {
 
         isRunning = true;
 
+
         if (startButton) {
-            startButton.textContent = "Running...";
+            startButton.textContent =
+                "Running...";
         }
 
-        timerInterval = setInterval(function () {
 
-            if (timeLeft > 0) {
+        timerInterval =
+            setInterval(function () {
 
-                timeLeft--;
+                if (timeLeft > 0) {
 
-                updateTimerDisplay();
+                    timeLeft--;
 
-            } else {
+                    updateTimerDisplay();
 
-                completeSession();
+                } else {
 
-            }
+                    completeSession();
+                }
 
-        }, 1000);
+            }, 1000);
     }
+
 
     function pauseTimer() {
 
@@ -385,10 +587,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
         isRunning = false;
 
+
         if (startButton) {
-            startButton.textContent = "Resume";
+
+            startButton.textContent =
+                "Resume";
         }
     }
+
 
     function resetTimer() {
 
@@ -400,12 +606,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
         timeLeft = 25 * 60;
 
+
         if (startButton) {
-            startButton.textContent = "Start";
+
+            startButton.textContent =
+                "Start";
         }
+
 
         updateTimerDisplay();
     }
+
 
     function saveFocusTime() {
 
@@ -415,19 +626,24 @@ document.addEventListener("DOMContentLoaded", function () {
         );
     }
 
+
     function updateFocusTime() {
 
         if (!focusTimeDisplay) {
             return;
         }
 
+
         if (completedFocusMinutes >= 60) {
 
             const hours =
-                Math.floor(completedFocusMinutes / 60);
+                Math.floor(
+                    completedFocusMinutes / 60
+                );
 
             const minutes =
                 completedFocusMinutes % 60;
+
 
             focusTimeDisplay.textContent =
                 `${hours}h ${minutes}m`;
@@ -438,6 +654,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 `${completedFocusMinutes}m`;
         }
     }
+
 
     function completeSession() {
 
@@ -455,131 +672,73 @@ document.addEventListener("DOMContentLoaded", function () {
 
         timeLeft = 25 * 60;
 
+
         if (startButton) {
-            startButton.textContent = "Start";
+
+            startButton.textContent =
+                "Start";
         }
+
 
         updateTimerDisplay();
 
-        alert("Focus session completed! Great work.");
+        updateStreak();
+
+        alert(
+            "Focus session completed! Great work."
+        );
     }
+
 
     function setupTimerEvents() {
 
         if (startButton) {
-            startButton.addEventListener("click", startTimer);
+
+            startButton.addEventListener(
+                "click",
+                startTimer
+            );
         }
+
 
         if (pauseButton) {
-            pauseButton.addEventListener("click", pauseTimer);
+
+            pauseButton.addEventListener(
+                "click",
+                pauseTimer
+            );
         }
+
 
         if (resetButton) {
-            resetButton.addEventListener("click", resetTimer);
-        }
-    }
 
-    function updateDailyProgress() {
-
-    if (!dailyProgress) {
-        return;
-    }
-
-    if (tasks.length === 0) {
-        dailyProgress.textContent = "0%";
-        return;
-    }
-
-    const completedTasks = tasks.filter(function (task) {
-        return task.completed;
-    }).length;
-
-    const progress = Math.round(
-        (completedTasks / tasks.length) * 100
-    );
-
-    dailyProgress.textContent = `${progress}%`;
-}
-
-
-let streakData = JSON.parse(
-    localStorage.getItem("nexusStreak")
-) || {
-    streak: 0,
-    lastActiveDate: null
-};
-
-function updateStreak() {
-
-    const todayDate = new Date().toISOString().split("T")[0];
-
-    if (streakData.lastActiveDate === todayDate) {
-
-        if (streakCount) {
-            streakCount.textContent = streakData.streak;
-        }
-
-        return;
-    }
-
-    if (streakData.lastActiveDate === null) {
-
-        streakData.streak = 1;
-
-    } else {
-
-        const lastDate = new Date(
-            streakData.lastActiveDate
-        );
-
-        const currentDate = new Date(todayDate);
-
-        const difference =
-            Math.floor(
-                (currentDate - lastDate) /
-                (1000 * 60 * 60 * 24)
+            resetButton.addEventListener(
+                "click",
+                resetTimer
             );
-
-        if (difference === 1) {
-
-            streakData.streak++;
-
-        } else if (difference > 1) {
-
-            streakData.streak = 1;
         }
     }
 
-    streakData.lastActiveDate = todayDate;
 
-    localStorage.setItem(
-        "nexusStreak",
-        JSON.stringify(streakData)
-    );
+    updateDateAndGreeting();
+
+    setupNavigation();
+
+    setupTaskEvents();
+
+    setupTimerEvents();
+
+    renderTasks();
+
+    updateTimerDisplay();
+
+    updateFocusTime();
+
 
     if (streakCount) {
-        streakCount.textContent = streakData.streak;
+
+        streakCount.textContent =
+            streakData.streak;
     }
-}
 
-    
-updateDateAndGreeting();
-
-setupNavigation();
-
-setupTaskEvents();
-
-setupTimerEvents();
-
-renderTasks();
-
-updateTimerDisplay();
-
-updateFocusTime();
-
-if (streakCount) {
-    streakCount.textContent = streakData.streak;
-}
-
-
-
+});
