@@ -155,25 +155,42 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        if (tasks.length === 0) {
-
-            dailyProgress.textContent = "0%";
-
-            return;
-        }
-
-        const completedTasks =
-            tasks.filter(function (task) {
-                return task.completed;
-            }).length;
-
-        const progress =
-            Math.round(
-                (completedTasks / tasks.length) * 100
-            );
+        const score =
+            calculateProductivityScore();
 
         dailyProgress.textContent =
-            `${progress}%`;
+            `${score}%`;
+
+        updateProgressMessage();
+    }
+
+
+    function calculateProductivityScore() {
+
+        const totalTasks = tasks.length;
+
+        const completedTasks =
+           tasks.filter(function (task) {
+              return task.completed;
+          }).length;
+
+        let taskScore = 0;
+
+        if (totalTasks > 0) {
+
+            taskScore =
+              (completedTasks / totalTasks) * 70;
+        }
+
+        const focusScore =
+            Math.min(
+               (completedFocusMinutes / 100) * 30,
+                30
+         );
+
+        return Math.round(
+            taskScore + focusScore
+        );
     }
 
 
@@ -198,6 +215,23 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 return true;
             });
+
+        const priorityOrder = {
+            high: 1,
+            medium: 2,
+            low: 3
+        };
+
+        filteredTasks.sort(function (a, b) {
+
+            const priorityA =
+                priorityOrder[a.priority || "medium"];
+
+            const priorityB =
+                priorityOrder[b.priority || "medium"];
+
+            return priorityA - priorityB;
+        });
 
 
         if (filteredTasks.length === 0) {
@@ -448,6 +482,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
                         task.completed =
                             event.target.checked;
+
+                        if (task && task.completed) {
+
+                            updateStreak();
+                        }
                     }
 
 
@@ -670,6 +709,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
         updateFocusTime();
 
+        updateDailyProgress();
+
         timeLeft = 25 * 60;
 
 
@@ -719,6 +760,45 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
+
+    function updateProgressMessage() {
+
+        const progressMessage =
+            document.querySelector(".stat-card:first-child p");
+
+        if (!progressMessage) {
+            return;
+        }
+
+        const score =
+            calculateProductivityScore();
+
+        if (score === 0) {
+
+            progressMessage.textContent =
+                "Start your day";
+
+        } else if (score < 30) {
+
+            progressMessage.textContent =
+                "Good start";
+
+        } else if (score < 60) {
+
+            progressMessage.textContent =
+                "Keep pushing";
+
+        } else if (score < 80) {
+
+            progressMessage.textContent =
+                "Great progress";
+
+        } else {
+
+            progressMessage.textContent =
+                "Excellent work";
+        }
+    }
 
     updateDateAndGreeting();
 
