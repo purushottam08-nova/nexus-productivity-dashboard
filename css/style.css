@@ -743,6 +743,26 @@ body {
     color: #08090d;
 }
 
+.task-item {
+    transition:
+        transform 0.25s ease,
+        border-color 0.25s ease,
+        background 0.25s ease;
+}
+
+.task-item:hover {
+    transform: translateX(4px);
+    border-color: rgba(139, 92, 246, 0.35);
+}
+
+.task-item.completed {
+    opacity: 0.7;
+}
+
+.task-checkbox {
+    accent-color: var(--accent);
+}
+
 
 @media (max-width: 900px) {
 
