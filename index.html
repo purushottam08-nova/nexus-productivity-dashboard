@@ -22,32 +22,32 @@
 
             <nav class="navigation">
 
-                <a href="#" class="nav-item active">
+                <a href="#dashboard" class="nav-item active" data-section="dashboard">
                     <span>⌂</span>
                     Dashboard
                 </a>
 
-                <a href="#" class="nav-item">
+                <a href="#tasks" class="nav-item" data-section="tasks">
                     <span>✓</span>
                     Tasks
                 </a>
 
-                <a href="#" class="nav-item">
+                <a href="#goals" class="nav-item" data-section="goals">
                     <span>◎</span>
                     Goals
                 </a>
 
-                <a href="#" class="nav-item">
+                <a href="#analytics" class="nav-item" data-section="analytics">
                     <span>◈</span>
                     Analytics
                 </a>
 
-                <a href="#" class="nav-item">
+                <a href="#notes" class="nav-item" data-section="notes">
                     <span>□</span>
                     Notes
                 </a>
 
-                <a href="#" class="nav-item">
+                <a href="#settings" class="nav-item" data-section="settings">
                     <span>⚙</span>
                     Settings
                 </a>
@@ -59,254 +59,542 @@
 
         <main class="main-content">
 
-            <header class="topbar">
+            <section id="dashboard" class="page-section active-section">
 
-                <div>
-                    <p>PRODUCTIVITY OS</p>
-                    <h2 id="topbar-greeting">Good Evening</h2>
-                </div>
-
-                <div class="profile">
-                    <span>Tanmay</span>
-                    <div class="avatar">T</div>
-                </div>
-
-            </header>
-
-
-            <section class="welcome">
-
-                <p id="current-date">
-                    Loading date...
-                </p>
-
-                <h1 id="welcome-message">
-                    Let's get things done.
-                </h1>
-
-            </section>
-
-
-            <section class="stats">
-
-                <div class="stat-card">
-
-                    <span>DAILY PROGRESS</span>
-
-                    <h2 id="daily-progress">0%</h2>
-
-                    <p>Keep pushing</p>
-
-                </div>
-
-
-                <div class="stat-card">
-
-                    <span>FOCUS TIME</span>
-
-                    <h2 id="focus-time">0m</h2>
-
-                    <p>Completed focus sessions</p>
-
-                </div>
-
-
-                <div class="stat-card">
-
-                    <span>TASKS DONE</span>
-
-                    <h2 id="completed-count">0</h2>
-
-                    <p>Completed tasks</p>
-
-                </div>
-
-
-                <div class="stat-card">
-
-                    <span>STREAK</span>
-
-                    <h2 id="streak-count">0</h2>
-
-                    <p>Days in a row</p>
-
-                </div>
-
-            </section>
-
-
-            <section class="dashboard-grid">
-
-                <div class="productivity-panel">
-
-                    <div class="panel-header">
-
-                        <h2>Productivity</h2>
-
-                        <span>THIS WEEK</span>
-
-                    </div>
-
-
-                    <div class="chart">
-
-                        <div class="chart-bar" style="height: 45%;"></div>
-
-                        <div class="chart-bar" style="height: 65%;"></div>
-
-                        <div class="chart-bar" style="height: 55%;"></div>
-
-                        <div class="chart-bar" style="height: 80%;"></div>
-
-                        <div class="chart-bar" style="height: 70%;"></div>
-
-                        <div class="chart-bar" style="height: 90%;"></div>
-
-                        <div class="chart-bar" style="height: 75%;"></div>
-
-                    </div>
-
-
-                    <div class="chart-labels">
-
-                        <span>M</span>
-                        <span>T</span>
-                        <span>W</span>
-                        <span>T</span>
-                        <span>F</span>
-                        <span>S</span>
-                        <span>S</span>
-
-                    </div>
-
-                </div>
-
-
-                <div class="focus-panel">
-
-                    <div class="panel-header">
-
-                        <h2>Focus Session</h2>
-
-                        <span>POMODORO</span>
-
-                    </div>
-
-
-                    <div class="timer" id="timer">
-                        25:00
-                    </div>
-
-
-                    <div class="timer-controls">
-
-                        <button
-                            class="timer-btn primary"
-                            id="start-btn"
-                        >
-                            Start
-                        </button>
-
-                        <button
-                            class="timer-btn"
-                            id="pause-btn"
-                        >
-                            Pause
-                        </button>
-
-                        <button
-                            class="timer-btn"
-                            id="reset-btn"
-                        >
-                            Reset
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </section>
-
-
-            <section class="tasks-section">
-
-                <div class="tasks-header">
+                <header class="topbar">
 
                     <div>
+                        <p>PRODUCTIVITY OS</p>
+                        <h2 id="topbar-greeting">Good Evening</h2>
+                    </div>
 
-                        <p>TODAY'S TASKS</p>
+                    <div class="profile">
+                        <span>Tanmay</span>
+                        <div class="avatar">T</div>
+                    </div>
 
-                        <h2>Task Manager</h2>
+                </header>
+
+
+                <section class="welcome">
+
+                    <p id="current-date">
+                        Loading date...
+                    </p>
+
+                    <h1 id="welcome-message">
+                        Let's get things done.
+                    </h1>
+
+                </section>
+
+
+                <section class="stats">
+
+                    <div class="stat-card">
+
+                        <span>DAILY PROGRESS</span>
+
+                        <h2 id="daily-progress">0%</h2>
+
+                        <p>Start your day</p>
 
                     </div>
 
 
-                    <span id="task-count">
-                        0 Tasks
-                    </span>
+                    <div class="stat-card">
+
+                        <span>FOCUS TIME</span>
+
+                        <h2 id="focus-time">0m</h2>
+
+                        <p>Completed focus sessions</p>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <span>TASKS DONE</span>
+
+                        <h2 id="completed-count">0</h2>
+
+                        <p>Completed tasks</p>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <span>STREAK</span>
+
+                        <h2 id="streak-count">0</h2>
+
+                        <p>Days in a row</p>
+
+                    </div>
+
+                </section>
+
+
+                <section class="dashboard-grid">
+
+                    <div class="productivity-panel">
+
+                        <div class="panel-header">
+
+                            <h2>Productivity</h2>
+
+                            <span>THIS WEEK</span>
+
+                        </div>
+
+
+                        <div class="chart" id="weekly-chart">
+
+                            <div class="chart-bar" style="height: 45%;"></div>
+                            <div class="chart-bar" style="height: 65%;"></div>
+                            <div class="chart-bar" style="height: 55%;"></div>
+                            <div class="chart-bar" style="height: 80%;"></div>
+                            <div class="chart-bar" style="height: 70%;"></div>
+                            <div class="chart-bar" style="height: 90%;"></div>
+                            <div class="chart-bar" style="height: 75%;"></div>
+
+                        </div>
+
+
+                        <div class="chart-labels" id="chart-labels">
+
+                            <span>M</span>
+                            <span>T</span>
+                            <span>W</span>
+                            <span>T</span>
+                            <span>F</span>
+                            <span>S</span>
+                            <span>S</span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="focus-panel">
+
+                        <div class="panel-header">
+
+                            <h2>Focus Session</h2>
+
+                            <span>POMODORO</span>
+
+                        </div>
+
+
+                        <div class="timer" id="timer">
+                            25:00
+                        </div>
+
+
+                        <div class="timer-controls">
+
+                            <button
+                                class="timer-btn primary"
+                                id="start-btn"
+                            >
+                                Start
+                            </button>
+
+                            <button
+                                class="timer-btn"
+                                id="pause-btn"
+                            >
+                                Pause
+                            </button>
+
+                            <button
+                                class="timer-btn"
+                                id="reset-btn"
+                            >
+                                Reset
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <section class="tasks-section">
+
+                    <div class="tasks-header">
+
+                        <div>
+
+                            <p>TODAY'S TASKS</p>
+
+                            <h2>Task Manager</h2>
+
+                        </div>
+
+                        <span id="task-count">
+                            0 Tasks
+                        </span>
+
+                    </div>
+
+
+                    <div class="task-filters">
+
+                        <button
+                            class="filter-btn active"
+                            data-filter="all"
+                        >
+                            All
+                        </button>
+
+                        <button
+                            class="filter-btn"
+                            data-filter="active"
+                        >
+                            Active
+                        </button>
+
+                        <button
+                            class="filter-btn"
+                            data-filter="completed"
+                        >
+                            Completed
+                        </button>
+
+                    </div>
+
+
+                    <div class="task-input">
+
+                        <input
+                            type="text"
+                            id="task-input"
+                            placeholder="What needs to be done?"
+                            autocomplete="off"
+                        >
+
+                        <select id="task-priority">
+
+                            <option value="low">
+                                Low Priority
+                            </option>
+
+                            <option value="medium" selected>
+                                Medium Priority
+                            </option>
+
+                            <option value="high">
+                                High Priority
+                            </option>
+
+                        </select>
+
+                        <button id="add-task-btn">
+                            Add Task
+                        </button>
+
+                    </div>
+
+
+                    <div id="task-list">
+                    </div>
+
+                </section>
+
+            </section>
+
+
+            <section id="tasks" class="page-section">
+
+                <div class="section-heading">
+
+                    <p>PRODUCTIVITY OS</p>
+
+                    <h1>Tasks</h1>
+
+                    <span>Manage your daily work and priorities.</span>
+
+                </div>
+
+                <div class="module-placeholder">
+
+                    <h2>Task Manager</h2>
+
+                    <p>
+                        Your task management system is available on the Dashboard.
+                    </p>
+
+                    <button
+                        class="module-btn"
+                        data-go-dashboard
+                    >
+                        Go to Dashboard
+                    </button>
+
+                </div>
+
+            </section>
+
+
+            <section id="goals" class="page-section">
+
+                <div class="section-heading">
+
+                    <p>PRODUCTIVITY OS</p>
+
+                    <h1>Goals</h1>
+
+                    <span>Turn your ambitions into measurable progress.</span>
 
                 </div>
 
 
-                <div class="task-filters">
-
-                    <button
-                        class="filter-btn active"
-                        data-filter="all"
-                    >
-                        All
-                    </button>
-
-                    <button
-                        class="filter-btn"
-                        data-filter="active"
-                    >
-                        Active
-                    </button>
-
-                    <button
-                        class="filter-btn"
-                        data-filter="completed"
-                    >
-                        Completed
-                    </button>
-
-                </div>
-
-
-                <div class="task-input">
+                <div class="goal-input-panel">
 
                     <input
                         type="text"
-                        id="task-input"
-                        placeholder="What needs to be done?"
+                        id="goal-input"
+                        placeholder="What do you want to achieve?"
                         autocomplete="off"
                     >
 
-                    <select id="task-priority">
-
-                        <option value="low">
-                            Low Priority
-                        </option>
-
-                        <option value="medium" selected>
-                            Medium Priority
-                        </option>
-
-                        <option value="high">
-                            High Priority
-                        </option>
-
-                    </select>
-
-                    <button id="add-task-btn">
-                        Add Task
+                    <button id="add-goal-btn">
+                        Add Goal
                     </button>
 
                 </div>
 
 
-                <div id="task-list">
+                <div class="goals-summary">
+
+                    <div class="summary-card">
+
+                        <span>TOTAL GOALS</span>
+
+                        <h2 id="total-goals">
+                            0
+                        </h2>
+
+                    </div>
+
+
+                    <div class="summary-card">
+
+                        <span>COMPLETED</span>
+
+                        <h2 id="completed-goals">
+                            0
+                        </h2>
+
+                    </div>
+
+
+                    <div class="summary-card">
+
+                        <span>IN PROGRESS</span>
+
+                        <h2 id="active-goals">
+                            0
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <div id="goal-list" class="goal-list">
+                </div>
+
+            </section>
+
+
+            <section id="analytics" class="page-section">
+
+                <div class="section-heading">
+
+                    <p>PRODUCTIVITY OS</p>
+
+                    <h1>Analytics</h1>
+
+                    <span>Understand how you spend your time.</span>
+
+                </div>
+
+
+                <div class="analytics-grid">
+
+                    <div class="analytics-card">
+
+                        <span>PRODUCTIVITY SCORE</span>
+
+                        <h2 id="analytics-score">
+                            0%
+                        </h2>
+
+                        <p>Based on tasks and focus sessions.</p>
+
+                    </div>
+
+
+                    <div class="analytics-card">
+
+                        <span>TOTAL TASKS</span>
+
+                        <h2 id="analytics-total-tasks">
+                            0
+                        </h2>
+
+                        <p>Tasks created in NEXUS.</p>
+
+                    </div>
+
+
+                    <div class="analytics-card">
+
+                        <span>COMPLETED TASKS</span>
+
+                        <h2 id="analytics-completed-tasks">
+                            0
+                        </h2>
+
+                        <p>Tasks successfully completed.</p>
+
+                    </div>
+
+
+                    <div class="analytics-card">
+
+                        <span>FOCUS MINUTES</span>
+
+                        <h2 id="analytics-focus-time">
+                            0m
+                        </h2>
+
+                        <p>Total completed focus time.</p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="analytics-panel">
+
+                    <div class="panel-header">
+
+                        <h2>Weekly Productivity</h2>
+
+                        <span>LIVE DATA</span>
+
+                    </div>
+
+
+                    <div class="analytics-bars" id="analytics-bars">
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <section id="notes" class="page-section">
+
+                <div class="section-heading">
+
+                    <p>PRODUCTIVITY OS</p>
+
+                    <h1>Notes</h1>
+
+                    <span>Capture ideas before they disappear.</span>
+
+                </div>
+
+
+                <div class="notes-input-panel">
+
+                    <input
+                        type="text"
+                        id="note-title"
+                        placeholder="Note title"
+                        autocomplete="off"
+                    >
+
+                    <textarea
+                        id="note-content"
+                        placeholder="Write your note..."
+                    ></textarea>
+
+                    <button id="add-note-btn">
+                        Save Note
+                    </button>
+
+                </div>
+
+
+                <div id="notes-list" class="notes-list">
+                </div>
+
+            </section>
+
+
+            <section id="settings" class="page-section">
+
+                <div class="section-heading">
+
+                    <p>PRODUCTIVITY OS</p>
+
+                    <h1>Settings</h1>
+
+                    <span>Customize your NEXUS experience.</span>
+
+                </div>
+
+
+                <div class="settings-panel">
+
+                    <div class="setting-row">
+
+                        <div>
+
+                            <h3>Appearance</h3>
+
+                            <p>Switch between dark and light mode.</p>
+
+                        </div>
+
+                        <button
+                            id="theme-toggle"
+                            class="setting-btn"
+                        >
+                            Light Mode
+                        </button>
+
+                    </div>
+
+
+                    <div class="setting-row">
+
+                        <div>
+
+                            <h3>Productivity Data</h3>
+
+                            <p>Remove saved NEXUS productivity data.</p>
+
+                        </div>
+
+                        <button
+                            id="clear-data-btn"
+                            class="setting-btn danger"
+                        >
+                            Clear Data
+                        </button>
+
+                    </div>
+
                 </div>
 
             </section>
