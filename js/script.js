@@ -27,6 +27,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const navItems = document.querySelectorAll(".nav-item");
     const pageSections = document.querySelectorAll(".page-section");
 
+    const toastContainer = document.querySelector("#toast-container");
+
     const goalInput = document.querySelector("#goal-input");
     const addGoalButton = document.querySelector("#add-goal-btn");
     const goalList = document.querySelector("#goal-list");
@@ -116,6 +118,53 @@ document.addEventListener("DOMContentLoaded", function () {
             welcomeMessage.textContent =
                 `${greeting}. Let's get things done.`;
         }
+    }
+
+    function showToast(message, type = "success") {
+
+        if (!toastContainer) {
+            return;
+        }
+
+        const toast =
+            document.createElement("div");
+
+        toast.classList.add(
+            "toast",
+            type
+        );
+
+        let icon = "✓";
+
+        if (type === "warning") {
+            icon = "!";
+        }
+
+        if (type === "danger") {
+            icon = "×";
+        }
+
+        toast.innerHTML = `
+            <div class="toast-icon">
+                ${icon}
+            </div>
+
+            <span>
+                ${message}
+            </span>
+        `;
+
+        toastContainer.appendChild(toast);
+
+        setTimeout(function () {
+
+            toast.classList.add("removing");
+
+            setTimeout(function () {
+                toast.remove();
+            }, 300);
+
+        }, 2500);
     }
 
 
@@ -517,6 +566,16 @@ document.addEventListener("DOMContentLoaded", function () {
         updateAnalytics();
 
         taskInput.focus();
+
+        taskInput.value = "";
+
+        renderTasks();
+
+        updateAnalytics();
+
+        showToast("Task added successfully");
+
+        taskInput.focus();
     }
 
 
@@ -580,11 +639,23 @@ document.addEventListener("DOMContentLoaded", function () {
                             event.target.checked;
 
                         if (task.completed) {
+
                             updateStreak();
                             updateWeeklyActivity();
+
+                            showToast(
+                                "Task completed!",
+                                "success"
+                            );
+
+                        } else {
+
+                            showToast(
+                                "Task marked as active",
+                                "warning"
+                            );
                         }
                     }
-
 
                     saveTasks();
 
@@ -621,12 +692,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
                         });
 
-
                     saveTasks();
 
                     renderTasks();
 
                     updateAnalytics();
+
+                    showToast(
+                        "Task deleted",
+                        "danger"
+                    );
                 }
             );
         }
@@ -829,8 +904,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
         updateTimerDisplay();
 
-        alert(
-            "Focus session completed! Great work."
+        showToast(
+            "Focus session completed! Great work.",
+            "success"
         );
     }
 
@@ -895,6 +971,10 @@ document.addEventListener("DOMContentLoaded", function () {
         renderGoals();
 
         updateStreak();
+
+        showToast(
+            "Goal added successfully"
+        );
 
         goalInput.focus();
     }
@@ -1124,12 +1204,22 @@ document.addEventListener("DOMContentLoaded", function () {
                                 goal.progress = 90;
                             }
 
+                            showToast(
+                                "Goal reopened",
+                                "warning"
+                            );
+
                         } else {
 
-                            goal.completed = true;
-                            goal.progress = 100;
+        goal.completed = true;
+        goal.progress = 100;
 
-                            updateStreak();
+        updateStreak();
+
+        showToast(
+            "Goal completed!",
+            "success"
+        );
                         }
                     }
 
@@ -1144,6 +1234,11 @@ document.addEventListener("DOMContentLoaded", function () {
                             goals.filter(function (item) {
                                 return item.id !== goalId;
                             });
+
+                        showToast(
+                            "Goal deleted",
+                            "danger"
+                        );
                     }
 
 
@@ -1436,6 +1531,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
         updateStreak();
 
+        showToast(
+           "Note saved successfully"
+        );
+
         noteTitle.focus();
     }
 
@@ -1552,6 +1651,11 @@ document.addEventListener("DOMContentLoaded", function () {
                     saveNotes();
 
                     renderNotes();
+
+                    showToast(
+                        "Note deleted",
+                        "danger"
+                    );
                 }
             );
         }
@@ -1762,6 +1866,10 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         resetTimer();
+        showToast(
+            "All productivity data cleared",
+            "danger"
+        );
     }
 
 
