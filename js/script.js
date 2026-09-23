@@ -360,13 +360,19 @@ document.addEventListener("DOMContentLoaded", function () {
 
             } else if (currentFilter === "active") {
 
-                emptyState.textContent =
-                    "No active tasks.";
+                emptyState.innerHTML = `
+                    <div class="empty-icon">✓</div>
+                    <h3>No active tasks</h3>
+                    <p>You're all caught up. Enjoy your progress.</p>
+                `;
 
             } else {
 
-                emptyState.textContent =
-                    "No tasks yet. Add your first task.";
+                emptyState.innerHTML = `
+                    <div class="empty-icon">✦</div>
+                    <h3>No tasks yet</h3>
+                    <p>Add your first task and start making progress.</p>
+                `;
             }
 
             taskList.appendChild(emptyState);
@@ -988,6 +994,26 @@ document.addEventListener("DOMContentLoaded", function () {
 
         goalList.innerHTML = "";
 
+                 if (goals.length === 0) {
+
+            const empty =
+                 document.createElement("div");
+
+            empty.classList.add("empty-state");
+
+            empty.innerHTML = `
+                   <div class="empty-icon">◎</div>
+                   <h3>No goals yet</h3>
+                  <p>Define a goal and turn your vision into progress.</p>
+            `;
+
+            goalList.appendChild(empty);
+
+            updateGoalSummary();
+
+            return;
+        }
+
         goals.forEach(function (goal) {
 
             const goalCard =
@@ -1554,8 +1580,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
             empty.classList.add("empty-state");
 
-            empty.textContent =
-                "No notes yet. Capture your first idea.";
+            empty.innerHTML = `
+                <div class="empty-icon">□</div>
+                <h3>No notes yet</h3>
+                <p>Capture your ideas before they disappear.</p>
+            `;
 
             notesList.appendChild(empty);
 

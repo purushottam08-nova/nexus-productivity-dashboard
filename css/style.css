@@ -1426,6 +1426,152 @@ body.light-mode .notes-input-panel textarea {
     animation: toastOut 0.3s ease forwards;
 }
 
+
+.empty-state {
+    padding: 45px 25px;
+    text-align: center;
+    color: var(--text-secondary);
+    border: 1px dashed var(--border);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.015);
+}
+
+.empty-icon {
+    width: 55px;
+    height: 55px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px;
+    border-radius: 16px;
+    background: rgba(139, 92, 246, 0.1);
+    color: var(--accent-light);
+    font-size: 25px;
+    box-shadow: 0 0 25px rgba(139, 92, 246, 0.08);
+}
+
+.empty-state h3 {
+    color: var(--text-primary);
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 8px;
+}
+
+.empty-state p {
+    color: var(--text-secondary);
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.stat-card,
+.productivity-panel,
+.focus-panel,
+.tasks-section,
+.goal-card,
+.analytics-card,
+.analytics-panel,
+.note-card {
+    animation: fadeUp 0.6s ease both;
+}
+
+.stat-card:nth-child(2) {
+    animation-delay: 0.08s;
+}
+
+.stat-card:nth-child(3) {
+    animation-delay: 0.16s;
+}
+
+.stat-card:nth-child(4) {
+    animation-delay: 0.24s;
+}
+
+.productivity-panel {
+    animation-delay: 0.12s;
+}
+
+.focus-panel {
+    animation-delay: 0.2s;
+}
+
+.tasks-section {
+    animation-delay: 0.28s;
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(14px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.task-item {
+    animation: taskAppear 0.3s ease both;
+}
+
+@keyframes taskAppear {
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.goal-card,
+.note-card {
+    animation: cardAppear 0.35s ease both;
+}
+
+@keyframes cardAppear {
+    from {
+        opacity: 0;
+        transform: scale(0.98) translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.timer {
+    transition:
+        transform 0.3s ease,
+        text-shadow 0.3s ease;
+}
+
+.timer:hover {
+    transform: scale(1.04);
+    text-shadow:
+        0 0 20px rgba(139, 92, 246, 0.6),
+        0 0 45px rgba(139, 92, 246, 0.25);
+}
+
+.chart-bar,
+.analytics-bar {
+    transform-origin: bottom;
+    animation: barRise 0.8s ease both;
+}
+
+@keyframes barRise {
+    from {
+        transform: scaleY(0);
+    }
+
+    to {
+        transform: scaleY(1);
+    }
+}
+
 @keyframes toastIn {
     from {
         opacity: 0;
