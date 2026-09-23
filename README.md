@@ -158,6 +158,7 @@ nexus-productivity-dashboard/
 │       └── favicon.svg
 │
 └── README.md
+```
 
 ---
 
